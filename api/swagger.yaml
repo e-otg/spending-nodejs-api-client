@@ -1,0 +1,6911 @@
+---
+swagger: "2.0"
+info:
+  version: "2.0"
+  title: "API spending.gov.ua"
+  termsOfService: "https://spending.gov.ua/api/termsOfService"
+  license:
+    name: "License"
+    url: "https://spending.gov.ua/api/license"
+host: "api.spending.gov.ua"
+basePath: "/api"
+tags:
+- name: "Dictionaries"
+  description: "Сервіс службових довідників"
+- name: "Disposers"
+  description: "Сервіс отримання підписаних документів"
+- name: "Google analytic statistic"
+  description: "Гугл аналітика"
+- name: "Map"
+  description: "Карта на першій сторінці"
+- name: "Pageable Disposers"
+  description: "Сервіс отримання підписаних документів"
+- name: "Regions"
+  description: "Довідник регіонів"
+- name: "Reports"
+  description: "Завантаження звітітів"
+- name: "Statistic"
+  description: "Статистика документів на порталі"
+- name: "Transactions"
+  description: "Дані по транcакціях"
+- name: "dict-controller"
+  description: "Dict Controller"
+paths:
+  /v2/api/reports/asynch:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит звіту за ЄДРПОУ, типом звіту та періодом"
+      operationId: "findAsynchUsingGET"
+      produces:
+      - "text/plain"
+      parameters:
+      - name: "edrpou"
+        in: "query"
+        description: "ЕДРПОУ"
+        required: false
+        type: "string"
+      - name: "reportTypeId"
+        in: "query"
+        description: "Тип звіту"
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "periodId"
+        in: "query"
+        description: "Період звіту"
+        required: false
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/asynch/codes:
+    get:
+      tags:
+      - "Reports"
+      summary: "Довідник кодів колонок/рядків звітів"
+      operationId: "codesUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ReportApiCodeDto"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/asynch/date/{date}:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит звітів за датою оприлюднення"
+      operationId: "findBySignDateUsingGET"
+      produces:
+      - "text/plain"
+      parameters:
+      - name: "date"
+        in: "path"
+        description: "Дата оприлюднення"
+        required: false
+        type: "string"
+        format: "date"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/asynch/deleted/{date}:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит вилучених звітів за дату"
+      operationId: "findByDeletedDateUsingGET"
+      produces:
+      - "text/plain"
+      parameters:
+      - name: "date"
+        in: "path"
+        description: "Дата вилучення"
+        required: false
+        type: "string"
+        format: "date"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/asynch/periods:
+    get:
+      tags:
+      - "Reports"
+      summary: "Довідник звітних періодів"
+      operationId: "getPeriodsUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/asynch/result/{token}:
+    get:
+      tags:
+      - "Reports"
+      summary: "Отримання результату запиту за віжповідним токеном"
+      operationId: "getAsynchUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "token"
+        in: "path"
+        description: "token"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+            format: "byte"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/kpk/:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getKpkUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "periodId"
+        in: "query"
+        description: "periodId"
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "budget"
+        in: "query"
+        description: "budget"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/kvk/:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getKvkUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "periodId"
+        in: "query"
+        description: "periodId"
+        required: false
+        type: "integer"
+        format: "int64"
+      - name: "budget"
+        in: "query"
+        description: "budget"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/periods/:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getPeriodsUsingGET_1"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/ping:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит транcакцій (page)"
+      operationId: "pingUsingGET_6"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/report_types/:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getReportTypesUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/report_types/{id}:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getReportTypeUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "id"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/signinfo:
+    post:
+      tags:
+      - "Reports"
+      summary: "Get signature details of Report"
+      operationId: "getReportInfoUsingPOST_1"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "checkSignReq"
+        description: "checkSignReq"
+        required: true
+        schema:
+          $ref: "#/definitions/CheckSignRequestDTO"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "201":
+          description: "Created"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/{disposer}/{reportId}:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports by ID"
+      operationId: "getReportUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "disposer"
+        in: "path"
+        description: "disposer"
+        required: true
+        type: "string"
+      - name: "reportId"
+        in: "path"
+        description: "reportId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/{disposer}/{reportId}/history:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит History reports by ID"
+      operationId: "getReporstHistoryListUsingGET_3"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "disposer"
+        in: "path"
+        description: "disposer"
+        required: true
+        type: "string"
+      - name: "reportId"
+        in: "path"
+        description: "reportId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/{disposer}/{reportId}/history/{historyId}:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит History reports by ID"
+      operationId: "getReporstHistoryListUsingGET_2"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "disposer"
+        in: "path"
+        description: "disposer"
+        required: true
+        type: "string"
+      - name: "reportId"
+        in: "path"
+        description: "reportId"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "historyId"
+        in: "path"
+        description: "historyId"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/{edrpou}/csv/:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getCsvUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "reportTypeId"
+        in: "query"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+        collectionFormat: "multi"
+      - name: "periodIds"
+        in: "query"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+        collectionFormat: "multi"
+      - name: "edrpou"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "budget"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "fund"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "vidClassCode"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "progClassCode"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "signDateFrom"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "createDateFrom"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "createDateTo"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signStatus"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "signed"
+        - "resigned"
+        - "oneshot"
+      - name: "page"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "size"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/reports/{edrpou}/page:
+    get:
+      tags:
+      - "Reports"
+      summary: "Запит reports"
+      operationId: "getPageUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "reportTypeId"
+        in: "query"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+        collectionFormat: "multi"
+      - name: "periodIds"
+        in: "query"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+        collectionFormat: "multi"
+      - name: "edrpou"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "budget"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "fund"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "vidClassCode"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "progClassCode"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "signDateFrom"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "createDateFrom"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "createDateTo"
+        in: "query"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signStatus"
+        in: "query"
+        required: false
+        type: "string"
+        enum:
+        - "signed"
+        - "resigned"
+        - "oneshot"
+      - name: "page"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "size"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/api/transactions/:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Повертає дані по транcакціях"
+      operationId: "getTransactionsByStreamUsingGET"
+      produces:
+      - "application/octet-stream"
+      - "application/json"
+      parameters:
+      - name: "payers_edrpous"
+        in: "query"
+        description: "Код платника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "recipt_edrpous"
+        in: "query"
+        description: "Код отримувача"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "regions"
+        in: "query"
+        description: "Регіон"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "multi"
+      - name: "source"
+        in: "query"
+        description: "Джерело даних"
+        required: false
+        type: "string"
+        enum:
+        - "UZ"
+        - "DKSU"
+        - "VPF"
+      - name: "startdate"
+        in: "query"
+        description: "Дата з"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "enddate"
+        in: "query"
+        description: "Дата по"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "payer_account"
+        in: "query"
+        description: "Рахунок платника"
+        required: false
+        type: "string"
+      - name: "recipt_account"
+        in: "query"
+        description: "Рахунок одержувача"
+        required: false
+        type: "string"
+      - name: "sumFrom"
+        in: "query"
+        description: "Сума від"
+        required: false
+        type: "number"
+      - name: "sumTo"
+        in: "query"
+        description: "Сума до"
+        required: false
+        type: "number"
+      - name: "purpose"
+        in: "query"
+        description: "Призначення платежу"
+        required: false
+        type: "string"
+      - name: "payerName"
+        in: "query"
+        description: "Назва платника"
+        required: false
+        type: "string"
+      - name: "reciptName"
+        in: "query"
+        description: "Назва одержувача"
+        required: false
+        type: "string"
+      - name: "payerNameEdrpou"
+        in: "query"
+        description: "Назва або ЄДРПОУ платника"
+        required: false
+        type: "string"
+      - name: "reciptNameEdrpou"
+        in: "query"
+        description: "Назва або ЄДРПОУ одержувача"
+        required: false
+        type: "string"
+      - name: "key"
+        in: "query"
+        description: "key"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "Повертає масив даних транcакцій по використанню коштів з є\
+            диного казначейського кореспондентського рахунку"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TransactionDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/lastload:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Повертає дату останнього завантаження даних до БД API"
+      operationId: "lastLoadUsingGET_1"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/LastLoadDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/page/:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Запит транcакцій"
+      operationId: "getPageUsingGET_1"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "payers_edrpous"
+        in: "query"
+        description: "Код платника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "recipt_edrpous"
+        in: "query"
+        description: "Код отримувача"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "regions"
+        in: "query"
+        description: "Регіон"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "multi"
+      - name: "source"
+        in: "query"
+        description: "Джерело даних"
+        required: false
+        type: "string"
+        enum:
+        - "UZ"
+        - "DKSU"
+        - "VPF"
+      - name: "startdate"
+        in: "query"
+        description: "Дата з"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "enddate"
+        in: "query"
+        description: "Дата по"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "payer_account"
+        in: "query"
+        description: "Рахунок платника"
+        required: false
+        type: "string"
+      - name: "recipt_account"
+        in: "query"
+        description: "Рахунок одержувача"
+        required: false
+        type: "string"
+      - name: "sumFrom"
+        in: "query"
+        description: "Сума від"
+        required: false
+        type: "number"
+      - name: "sumTo"
+        in: "query"
+        description: "Сума до"
+        required: false
+        type: "number"
+      - name: "purpose"
+        in: "query"
+        description: "Призначення платежу"
+        required: false
+        type: "string"
+      - name: "payerName"
+        in: "query"
+        description: "Назва платника"
+        required: false
+        type: "string"
+      - name: "reciptName"
+        in: "query"
+        description: "Назва одержувача"
+        required: false
+        type: "string"
+      - name: "payerNameEdrpou"
+        in: "query"
+        description: "Назва або ЄДРПОУ платника"
+        required: false
+        type: "string"
+      - name: "reciptNameEdrpou"
+        in: "query"
+        description: "Назва або ЄДРПОУ одержувача"
+        required: false
+        type: "string"
+      - name: "page"
+        in: "query"
+        description: "Сторінка"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "pageSize"
+        in: "query"
+        description: "Записів на сторінці"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/TransactionsPageDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/page/ping:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Запит транcакцій (page)"
+      operationId: "pingUsingGET_9"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/ping:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_8"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/stat:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає агреговану статистику трансакцій на порталі (загальна кіл\
+        ькість/сума)"
+      operationId: "geAllStatUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TransStatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/api/transactions/stat/month:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає агреговану статистику трансакцій на порталі (загальна кіл\
+        ькість/сума) за поточний місяць"
+      operationId: "getCurrMonthStatUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TransStatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/api/transactions/stat/ping:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_10"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/api/transactions/stat/year:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає агреговану статистику трансакцій на порталі (загальна кіл\
+        ькість/сума) за поточный рік"
+      operationId: "getCurrYearStatUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TransStatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/api/transactions/top100:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Повертає Топ 100 транcакцій по регіону"
+      operationId: "getTop100UsingGET"
+      produces:
+      - "application/octet-stream"
+      - "application/json"
+      parameters:
+      - name: "region"
+        in: "query"
+        description: "region"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "Повертає Топ 100 транcакцій по регіону"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TransactionDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/top5:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Повертає Топ 5 транcакцій по Україні"
+      operationId: "getTop5UsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "Повертає Топ 5 транcакцій по Україні"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TopTransaction"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/api/transactions/{disposer}/{transactionId}:
+    get:
+      tags:
+      - "Transactions"
+      summary: "Запит транcакцій"
+      operationId: "getTransactionDetailsUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "disposer"
+        in: "path"
+        description: "disposer"
+        required: true
+        type: "string"
+      - name: "transactionId"
+        in: "path"
+        description: "transactionId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/TransactionDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Transactions"
+  /v2/budget/dict/inc:
+    get:
+      tags:
+      - "budget"
+      summary: "Класифікація доходів бюджету"
+      operationId: "incUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Authorization"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DicIncDto"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Budget"
+  /v2/budget/dict/kek:
+    get:
+      tags:
+      - "budget"
+      summary: "Класифікація доходів бюджету"
+      operationId: "kekUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        description: "Authorization"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DicKekDto"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Budget"
+  /v2/dictionaries/DKSUdepartments:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник регіонів"
+      operationId: "getDksuDepartmentsUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Regions"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/contractors:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник типів контрагентів"
+      operationId: "getContractorTypesUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/ContractorType"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/countries:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник країн"
+      operationId: "getCountriesUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Country"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/currency:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник валют"
+      operationId: "getCurrencyListUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Country"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/dkpp:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник ДКПП"
+      operationId: "getDkppUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DkppDict"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/koatuu:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає адресу за КОАТУУ"
+      operationId: "getAddressByKoatuuUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "koatuu"
+        in: "query"
+        description: "koatuu"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ShortAddressDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/kopfg:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник КОПФГ"
+      operationId: "getKopfgUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/KvedDict"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/kved:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник КВЕД"
+      operationId: "getKvedUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/KvedDict"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/kved/{exactKved}:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає КВЕД"
+      operationId: "getExactKvedUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "exactKved"
+        in: "path"
+        description: "exactKved"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/KvedDict"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/organizationtypes:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник типів організацій"
+      operationId: "getOrgTypesUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OrganizationTypesDict"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/ping:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_1"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/procurement:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник CPV"
+      operationId: "getProcurementDictionaryUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lang"
+        in: "query"
+        description: "lang"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Procurement"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/dictionaries/regions:
+    get:
+      tags:
+      - "Dictionaries"
+      summary: "Повертає довідник регіонів"
+      operationId: "getRegionsUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Regions"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Dictionaries"
+  /v2/disposers/acts:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get acts of edrpou"
+      operationId: "getActsUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DocumentResultDTO«ActDTO»"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/acts/{actId}:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get act by id"
+      operationId: "getActUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "actId"
+        in: "path"
+        description: "actId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ActDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/acts/{edrpou}/csv:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Export acts to csv"
+      operationId: "getCsvActsUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/addendums:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get addendums of edrpou"
+      operationId: "getAddendsUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DocumentResultDTO«AddendumDTO»"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/addendums/{addendumId}:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get addendum by id"
+      operationId: "getAddendumUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "addendumId"
+        in: "path"
+        description: "addendumId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/AddendumDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/addendums/{edrpou}/csv:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Export addendums to csv"
+      operationId: "getCsvAddendumsUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/contracts:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get agreements of edrpou"
+      operationId: "getAgreementsUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      - name: "enabledInDateFrom"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "enabledInDateTo"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DocumentResultDTO«ContractDTO»"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/contracts/{contractId}:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get agreement with related documents by agreement id"
+      operationId: "getContractUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contractId"
+        in: "path"
+        description: "contractId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/ContractWithSubdocumentsDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/contracts/{edrpou}/csv:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Export agreements of edrpou to csv"
+      operationId: "getCsvAgreementsUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      - name: "enabledInDateFrom"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "enabledInDateTo"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/csv:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Завантажити csv розпорядників"
+      operationId: "getDisposersCsvUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "regionIds"
+        in: "query"
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "multi"
+      - name: "edrpou"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "organizationName"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "kopfg"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "orgEdrState"
+        in: "query"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "hasCabinet"
+        in: "query"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/InputStreamResource"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/documents/signinfo:
+    post:
+      tags:
+      - "Disposers"
+      summary: "Get signature details of Contract/Act/ect"
+      operationId: "getReportInfoUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "checkSignReq"
+        description: "checkSignReq"
+        required: true
+        schema:
+          $ref: "#/definitions/CheckSignRequestDTO"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "201":
+          description: "Created"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/files:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Повертає перелік згенерованих файлів"
+      operationId: "getFilesListUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/FileDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/page:
+    post:
+      tags:
+      - "Pageable Disposers"
+      summary: "Get disposer (page)"
+      operationId: "getDisposersUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "request"
+        description: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/PagedRequest«DistributorRequest»"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/PageResult«DistributorDTO»"
+        "201":
+          description: "Created"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "PageableDisposers"
+  /v2/disposers/page/ministries:
+    post:
+      tags:
+      - "Pageable Disposers"
+      summary: "Get disposer (page)"
+      operationId: "getMinistriesUsingPOST"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "request"
+        description: "request"
+        required: true
+        schema:
+          $ref: "#/definitions/PagedRequest«Void»"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/PageResult«DistributorDTO»"
+        "201":
+          description: "Created"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "PageableDisposers"
+  /v2/disposers/page/ping:
+    get:
+      tags:
+      - "Pageable Disposers"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_3"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "PageableDisposers"
+  /v2/disposers/page/{docType}:
+    get:
+      tags:
+      - "Pageable Disposers"
+      summary: "Get page of documents"
+      operationId: "getDocUsingGET"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "docType"
+        in: "path"
+        description: "docType"
+        required: true
+        type: "string"
+      - name: "X-FILTER-DATA"
+        in: "header"
+        description: "X-FILTER-DATA"
+        required: false
+        type: "string"
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      - name: "page"
+        in: "query"
+        description: "Номер сторінки"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "pageSize"
+        in: "query"
+        description: "Кількість елементів на сторінці"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "enabledInDateFrom"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "enabledInDateTo"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/PageResult«DocumentDTO»"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "PageableDisposers"
+  /v2/disposers/peny:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get peny of edrpou"
+      operationId: "getPenyUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DocumentResultDTO«PenyDTO»"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/peny/{edrpou}/csv:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Export peny to csv"
+      operationId: "getCsvPenyUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "documentId"
+        in: "query"
+        description: "Ідентифікатор документу"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "disposerId"
+        in: "query"
+        description: "ЄДРПОУ розпорядника"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "contractorId"
+        in: "query"
+        description: "ЄДРПОУ контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "currency"
+        in: "query"
+        description: "Валюта"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "names"
+        in: "query"
+        description: "Назва контрагента"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "multi"
+      - name: "documentDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "documentDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою документа (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateFrom"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "signDateTo"
+        in: "query"
+        description: "Діапазон пошуку за датою підпису документа (дата по, включно\
+          )"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "amountFrom"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума з, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "amountTo"
+        in: "query"
+        description: "Діапазон пошуку по сумі (сума по, включно)"
+        required: false
+        type: "number"
+        format: "double"
+      - name: "documentNumber"
+        in: "query"
+        description: "Номер документу. При пошуку за номером документу необхідно в\
+          казати ЄДРПОУ розпорядника"
+        required: false
+        type: "string"
+      - name: "version"
+        in: "query"
+        description: "Наявність версій"
+        required: false
+        type: "boolean"
+      - name: "enabledInDateFrom"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата з, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      - name: "enabledInDateTo"
+        in: "query"
+        description: "Пошук за діапазоном дії договору (дата по, включно)"
+        required: false
+        type: "string"
+        format: "date-time"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/peny/{penyId}:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get peny by id"
+      operationId: "getPenaltyUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "penyId"
+        in: "path"
+        description: "penyId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/PenyDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/ping:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_2"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/snapshot/{date}/{type}:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Отримати файл з підписаними документами вказаного типу на вказану\
+        \ дату"
+      operationId: "getDataSnapshotUsingGET"
+      produces:
+      - "*/*"
+      parameters:
+      - name: "date"
+        in: "path"
+        description: "date"
+        required: true
+        type: "string"
+      - name: "type"
+        in: "path"
+        description: "type"
+        required: true
+        type: "string"
+        enum:
+        - "UNDEFINED"
+        - "CONTRACT"
+        - "ADDENDUM"
+        - "ACT"
+        - "PENY"
+        - "DELETED"
+      responses:
+        "200":
+          description: "return .zip with JSON documents registry"
+          schema:
+            $ref: "#/definitions/ContractDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "No file found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/stat/{edrpou}:
+    get:
+      tags:
+      - "Statistic"
+      - "Disposers"
+      summary: "Статистика"
+      operationId: "getStatUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/DisposerStatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/disposers/{edrpou}:
+    get:
+      tags:
+      - "Disposers"
+      summary: "Get disposer"
+      operationId: "getDataUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/OrganizationDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Disposers"
+  /v2/disposers/{edrpou}/{docId}/history:
+    get:
+      tags:
+      - "Reports"
+      - "Disposers"
+      summary: "Запит History reports by ID"
+      operationId: "getReporstHistoryListUsingGET_1"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "docId"
+        in: "path"
+        description: "docId"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/disposers/{edrpou}/{docId}/history/{historyId}:
+    get:
+      tags:
+      - "Reports"
+      - "Disposers"
+      summary: "Запит History reports by ID"
+      operationId: "getReporstHistoryListUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "edrpou"
+        in: "path"
+        description: "edrpou"
+        required: true
+        type: "string"
+      - name: "docId"
+        in: "path"
+        description: "docId"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "historyId"
+        in: "path"
+        description: "historyId"
+        required: true
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "string"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Reports"
+  /v2/googleStat/age:
+    get:
+      tags:
+      - "Google analytic statistic"
+      summary: "Статистика за віком"
+      operationId: "getAgeStatUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "GoogleAnalyticStatistic"
+  /v2/googleStat/browser:
+    get:
+      tags:
+      - "Google analytic statistic"
+      summary: "Використання браузерів"
+      operationId: "getBrowserStatUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "GoogleAnalyticStatistic"
+  /v2/googleStat/device:
+    get:
+      tags:
+      - "Google analytic statistic"
+      summary: "Використання пристроїв"
+      operationId: "getDeviceStatUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "GoogleAnalyticStatistic"
+  /v2/googleStat/gender:
+    get:
+      tags:
+      - "Google analytic statistic"
+      summary: "Демографічні показники"
+      operationId: "getGenderStatUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "GoogleAnalyticStatistic"
+  /v2/googleStat/ping:
+    get:
+      tags:
+      - "Google analytic statistic"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_4"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "GoogleAnalyticStatistic"
+  /v2/googleStat/regions:
+    get:
+      tags:
+      - "Google analytic statistic"
+      summary: "Статистика за регіонами"
+      operationId: "getRegionStatUsingGET"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RegionStatDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "GoogleAnalyticStatistic"
+  /v2/map/aggregate:
+    get:
+      tags:
+      - "Map"
+      summary: "Повертає агреговані дані для карти"
+      operationId: "getAggregateDataUsingGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lang"
+        in: "query"
+        description: "lang"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/AggregateMapDTO"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Map"
+  /v2/regions:
+    get:
+      tags:
+      - "Regions"
+      summary: "Повертає довідник регіонів"
+      operationId: "getRegionsUsingGET_1"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Regions"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      deprecated: true
+      x-swagger-router-controller: "Regions"
+  /v2/regions/ping:
+    get:
+      tags:
+      - "Regions"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_5"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Regions"
+  /v2/stat/cabinet:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає статистику кабінетів)"
+      operationId: "getCabinetPageStatUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters:
+      - name: "kopfg"
+        in: "query"
+        description: "КОПФГ"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "regionId"
+        in: "query"
+        description: "Регіон"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "page"
+        in: "query"
+        description: "Номер сторінки"
+        required: false
+        type: "integer"
+        format: "int32"
+      - name: "pageSize"
+        in: "query"
+        description: "Кількість елементів на сторінці"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/EnterpriseStatistic"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/stat/documents:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає агреговану статистику документів на порталі (загальна кіл\
+        ькість/кількість оприлюднених)"
+      operationId: "getDocStatUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/DocStat"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/stat/dynamics:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає динаміку реєстрації кабінетів"
+      operationId: "getDynamicsByPeriodsUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/CabinetRegDynamic"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/stat/kopfg:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає агреговану статистику за КОАТУУ та КОПФГ"
+      operationId: "getKopfgStatUsingGET"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RegionKopfgStat"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/stat/organizations/csv:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Повертає статистику документів організацій на порталі"
+      operationId: "getCsvStatsUsingGET"
+      produces:
+      - "application/octet-stream"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/OrgStat"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+  /v2/stat/ping:
+    get:
+      tags:
+      - "Statistic"
+      summary: "Перевірка доступності API"
+      operationId: "pingUsingGET_7"
+      produces:
+      - "application/json;charset=UTF-8"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "Unauthorized"
+        "403":
+          description: "Forbidden"
+        "404":
+          description: "Not Found"
+      x-swagger-router-controller: "Statistic"
+definitions:
+  ActDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "id-документу"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ-розпорядника"
+      documentNumber:
+        type: "string"
+        description: "Номер документу"
+      documentDate:
+        type: "string"
+        description: "Дата укладання документу"
+      signDate:
+        type: "string"
+        description: "Дата підписання (оприлюднення)"
+      signature:
+        description: "ЕЦП"
+        $ref: "#/definitions/SignatureDTO"
+      amount:
+        type: "number"
+        format: "double"
+        description: "Вартість документу"
+      currency:
+        type: "string"
+        description: "Валюта документу"
+      currencyAmountUAH:
+        type: "number"
+        format: "double"
+        description: "Еквівалент, грн. (для валютних документів)"
+      contractors:
+        type: "array"
+        description: "Контрагенти"
+        items:
+          $ref: "#/definitions/ContractorDTO"
+      parentId:
+        type: "integer"
+        format: "int64"
+        description: "id-договору (\"батьківський\" договір для акта)"
+      pdvInclude:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ у вартості акта"
+      pdvAmount:
+        type: "number"
+        format: "double"
+        description: "сума ПДВ у вартості акта"
+      specifications:
+        type: "array"
+        description: "Специфікації"
+        items:
+          $ref: "#/definitions/SpecificationDTO"
+      isCpvVat:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/ без ПДВ у ціні за одиницю специфікації"
+      procurementItems:
+        type: "array"
+        description: "Масив кодів за ДК 021:2015"
+        items:
+          $ref: "#/definitions/Procurement"
+    title: "ActDTO"
+    example:
+      documentDate: "documentDate"
+      amount: 5.962133916683182377482808078639209270477294921875
+      procurementItems:
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      signature:
+        caAddress: "caAddress"
+      documentNumber: "documentNumber"
+      signDate: "signDate"
+      specifications:
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      parentId: 3
+      pdvInclude: false
+      contractors:
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+      edrpou: "edrpou"
+      isCpvVat: false
+      currency: "currency"
+      id: 1
+      pdvAmount: 2.027123023002321833274663731572218239307403564453125
+  AddendumDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "id-документу"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ-розпорядника"
+      documentNumber:
+        type: "string"
+        description: "Номер документу"
+      documentDate:
+        type: "string"
+        description: "Дата укладання документу"
+      signDate:
+        type: "string"
+        description: "Дата підписання (оприлюднення)"
+      signature:
+        description: "ЕЦП"
+        $ref: "#/definitions/SignatureDTO"
+      amount:
+        type: "number"
+        format: "double"
+        description: "Вартість документу"
+      currency:
+        type: "string"
+        description: "Валюта документу"
+      currencyAmountUAH:
+        type: "number"
+        format: "double"
+        description: "Еквівалент, грн. (для валютних документів)"
+      contractors:
+        type: "array"
+        description: "Контрагенти"
+        items:
+          $ref: "#/definitions/ContractorDTO"
+      parentId:
+        type: "integer"
+        format: "int64"
+        description: "id-договору (\"батьківський\" договір для додаткової угоди)"
+      fromDate:
+        type: "string"
+        description: "строк дії дод.угоди з"
+      toDate:
+        type: "string"
+        description: "строк дії дод.угоди по"
+      noTerm:
+        type: "boolean"
+        example: false
+        description: "Безстроковий"
+      subject:
+        type: "string"
+        description: "предмет додаткової угоди"
+      amountIncrease:
+        type: "number"
+        format: "double"
+        description: "сума додаткової угоди"
+      pdvInclude:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ скоригована вартість основного договору"
+      pdvAmount:
+        type: "number"
+        format: "double"
+        description: "сума ПДВ в скоригованій вартості основного договору"
+      correctionType:
+        type: "integer"
+        format: "int32"
+        description: "Тип коригування вартості основного договору:\n0: сума додатк\
+          ової угоди зменшує вартість основного договору,\n1: сума додаткової угод\
+          и збільшує вартість основного договору,\n2: сума додаткової угоди не змі\
+          нює вартість основного договору"
+      isCorrectionWithPDF:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ сума додаткової угоди"
+      correctionVATValue:
+        type: "number"
+        format: "double"
+        description: "сума ПДВ у сумі додаткової угоди"
+      reasonTypes:
+        type: "array"
+        description: "підстава укладення додаткової угоди:\n0: зміна предмету,\n1:\
+          \ зміна ціни,\n2: зміна терміну,\n99: інше"
+        items:
+          $ref: "#/definitions/AddendumReasonDTO"
+      reasonOtherComment:
+        type: "string"
+        description: "деталізація підстави \"99:інше\""
+      specifications:
+        type: "array"
+        description: "Специфікації"
+        items:
+          $ref: "#/definitions/SpecificationDTO"
+      isCpvVat:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/ без ПДВ у ціні за одиницю специфікації"
+      procurementItems:
+        type: "array"
+        description: "Масив кодів за ДК 021:2015"
+        items:
+          $ref: "#/definitions/Procurement"
+    title: "AddendumDTO"
+    example:
+      documentDate: "documentDate"
+      procurementItems:
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      amountIncrease: 7.061401241503109105224211816675961017608642578125
+      signature:
+        caAddress: "caAddress"
+      documentNumber: "documentNumber"
+      subject: "subject"
+      correctionVATValue: 2.027123023002321833274663731572218239307403564453125
+      signDate: "signDate"
+      specifications:
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+      reasonTypes:
+      - reasonId: 4
+      - reasonId: 4
+      edrpou: "edrpou"
+      currency: "currency"
+      id: 1
+      pdvAmount: 9.301444243932575517419536481611430644989013671875
+      amount: 5.962133916683182377482808078639209270477294921875
+      reasonOtherComment: "reasonOtherComment"
+      toDate: "toDate"
+      isCorrectionWithPDF: false
+      parentId: 2
+      pdvInclude: false
+      fromDate: "fromDate"
+      contractors:
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      noTerm: false
+      correctionType: 3
+      isCpvVat: false
+  AddendumReasonDTO:
+    type: "object"
+    properties:
+      reasonId:
+        type: "integer"
+        format: "int32"
+    title: "AddendumReasonDTO"
+    example:
+      reasonId: 4
+  AddressDTO:
+    type: "object"
+    properties:
+      city:
+        type: "string"
+      countryId:
+        type: "integer"
+        format: "int64"
+      countryName:
+        type: "string"
+      district:
+        type: "string"
+      districtCity:
+        type: "string"
+      house:
+        type: "string"
+      housing:
+        type: "string"
+      office:
+        type: "string"
+      regionId:
+        type: "integer"
+        format: "int64"
+      regionName:
+        type: "string"
+      street:
+        type: "string"
+    title: "AddressDTO"
+    example:
+      districtCity: "districtCity"
+      city: "city"
+      housing: "housing"
+      regionId: 7
+      street: "street"
+      district: "district"
+      regionName: "regionName"
+      countryName: "countryName"
+      office: "office"
+      house: "house"
+      countryId: 2
+  AggregateMapDTO:
+    type: "object"
+    properties:
+      legendsDtoList:
+        type: "array"
+        items:
+          $ref: "#/definitions/LegendDTO"
+      listTreasureDataDTO:
+        type: "array"
+        items:
+          $ref: "#/definitions/AggregateTreasureDataDTO"
+    title: "AggregateMapDTO"
+    example:
+      listTreasureDataDTO:
+      - amount: 6.02745618307040320615897144307382404804229736328125
+        regionId: 5
+        colorId: 1
+        regionName: "regionName"
+        transactionsCount: 5
+      - amount: 6.02745618307040320615897144307382404804229736328125
+        regionId: 5
+        colorId: 1
+        regionName: "regionName"
+        transactionsCount: 5
+      legendsDtoList:
+      - regions:
+        - 0
+        - 0
+        legend: "legend"
+      - regions:
+        - 0
+        - 0
+        legend: "legend"
+  AggregateTreasureDataDTO:
+    type: "object"
+    properties:
+      amount:
+        type: "number"
+      colorId:
+        type: "integer"
+        format: "int32"
+      regionId:
+        type: "integer"
+        format: "int32"
+      regionName:
+        type: "string"
+      transactionsCount:
+        type: "integer"
+        format: "int32"
+    title: "AggregateTreasureDataDTO"
+    example:
+      amount: 6.02745618307040320615897144307382404804229736328125
+      regionId: 5
+      colorId: 1
+      regionName: "regionName"
+      transactionsCount: 5
+  CabinetRegDynamic:
+    type: "object"
+    properties:
+      amount:
+        type: "integer"
+        format: "int64"
+      date:
+        type: "string"
+        example: "yyyy-MM-dd"
+    title: "CabinetRegDynamic"
+    example:
+      date: "yyyy-MM-dd"
+      amount: 0
+  CheckSignRequestDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      version:
+        type: "integer"
+        format: "int32"
+    title: "CheckSignRequestDTO"
+    example:
+      id: 0
+      version: 6
+  ContractDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "id-документу"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ-розпорядника"
+      documentNumber:
+        type: "string"
+        description: "Номер документу"
+      documentDate:
+        type: "string"
+        description: "Дата укладання документу"
+      signDate:
+        type: "string"
+        description: "Дата підписання (оприлюднення)"
+      signature:
+        description: "ЕЦП"
+        $ref: "#/definitions/SignatureDTO"
+      amount:
+        type: "number"
+        format: "double"
+        description: "Вартість документу"
+      currency:
+        type: "string"
+        description: "Валюта документу"
+      currencyAmountUAH:
+        type: "number"
+        format: "double"
+        description: "Еквівалент, грн. (для валютних документів)"
+      contractors:
+        type: "array"
+        description: "Контрагенти"
+        items:
+          $ref: "#/definitions/ContractorDTO"
+      fromDate:
+        type: "string"
+        description: "Строк дії договору з"
+      toDate:
+        type: "string"
+        description: "Строк дії договору по"
+      subject:
+        type: "string"
+        description: "Предмет договору"
+      noTerm:
+        type: "boolean"
+        example: false
+        description: "Безстроковий"
+      pdvInclude:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ у вартості договору"
+      pdvAmount:
+        type: "number"
+        format: "double"
+        description: "Сума ПДВ у вартості договору"
+      tender:
+        type: "boolean"
+        example: false
+        description: "Тендерна процедура закупівлі"
+      reason:
+        type: "string"
+        description: "Обґрунтування відсутності тендерної процедури закупівлі"
+      specifications:
+        type: "array"
+        description: "Специфікації"
+        items:
+          $ref: "#/definitions/SpecificationDTO"
+      isCpvVat:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ у ціні за одиницю специфікац"
+      procurementItems:
+        type: "array"
+        description: "Масив кодів за ДК 021:2015"
+        items:
+          $ref: "#/definitions/Procurement"
+    title: "ContractDTO"
+    example:
+      documentDate: "documentDate"
+      tender: false
+      reason: "reason"
+      amount: 5.962133916683182377482808078639209270477294921875
+      procurementItems:
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      signature:
+        caAddress: "caAddress"
+      documentNumber: "documentNumber"
+      subject: "subject"
+      toDate: "toDate"
+      signDate: "signDate"
+      specifications:
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      pdvInclude: false
+      fromDate: "fromDate"
+      contractors:
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+      edrpou: "edrpou"
+      noTerm: false
+      isCpvVat: false
+      currency: "currency"
+      id: 1
+      pdvAmount: 2.3021358869347654518833223846741020679473876953125
+  ContractWithSubdocumentsDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "id-документу"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ-розпорядника"
+      documentNumber:
+        type: "string"
+        description: "Номер документу"
+      documentDate:
+        type: "string"
+        description: "Дата укладання документу"
+      signDate:
+        type: "string"
+        description: "Дата підписання (оприлюднення)"
+      signature:
+        description: "ЕЦП"
+        $ref: "#/definitions/SignatureDTO"
+      amount:
+        type: "number"
+        format: "double"
+        description: "Вартість документу"
+      currency:
+        type: "string"
+        description: "Валюта документу"
+      currencyAmountUAH:
+        type: "number"
+        format: "double"
+        description: "Еквівалент, грн. (для валютних документів)"
+      contractors:
+        type: "array"
+        description: "Контрагенти"
+        items:
+          $ref: "#/definitions/ContractorDTO"
+      fromDate:
+        type: "string"
+        description: "Строк дії договору з"
+      toDate:
+        type: "string"
+        description: "Строк дії договору по"
+      subject:
+        type: "string"
+        description: "Предмет договору"
+      noTerm:
+        type: "boolean"
+        example: false
+        description: "Безстроковий"
+      pdvInclude:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ у вартості договору"
+      pdvAmount:
+        type: "number"
+        format: "double"
+        description: "Сума ПДВ у вартості договору"
+      tender:
+        type: "boolean"
+        example: false
+        description: "Тендерна процедура закупівлі"
+      reason:
+        type: "string"
+        description: "Обґрунтування відсутності тендерної процедури закупівлі"
+      specifications:
+        type: "array"
+        description: "Специфікації"
+        items:
+          $ref: "#/definitions/SpecificationDTO"
+      isCpvVat:
+        type: "boolean"
+        example: false
+        description: "з ПДВ/без ПДВ у ціні за одиницю специфікац"
+      procurementItems:
+        type: "array"
+        description: "Масив кодів за ДК 021:2015"
+        items:
+          $ref: "#/definitions/Procurement"
+      acts:
+        type: "array"
+        items:
+          $ref: "#/definitions/ActDTO"
+      addendums:
+        type: "array"
+        items:
+          $ref: "#/definitions/AddendumDTO"
+      penalties:
+        type: "array"
+        items:
+          $ref: "#/definitions/PenyDTO"
+    title: "ContractWithSubdocumentsDTO"
+    example:
+      documentDate: "documentDate"
+      tender: false
+      reason: "reason"
+      amount: 6.02745618307040320615897144307382404804229736328125
+      procurementItems:
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      - cpvCode: "cpvCode"
+        nameUa: "nameUa"
+      penalties:
+      - documentDate: "documentDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        amount: 2.3021358869347654518833223846741020679473876953125
+        currencyAmountUAH: 7.061401241503109105224211816675961017608642578125
+        edrpou: "edrpou"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        currency: "currency"
+        id: 5
+        signDate: "signDate"
+        parentId: 9
+      - documentDate: "documentDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        amount: 2.3021358869347654518833223846741020679473876953125
+        currencyAmountUAH: 7.061401241503109105224211816675961017608642578125
+        edrpou: "edrpou"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        currency: "currency"
+        id: 5
+        signDate: "signDate"
+        parentId: 9
+      signature:
+        caAddress: "caAddress"
+      documentNumber: "documentNumber"
+      subject: "subject"
+      toDate: "toDate"
+      addendums:
+      - documentDate: "documentDate"
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        amountIncrease: 7.061401241503109105224211816675961017608642578125
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        subject: "subject"
+        correctionVATValue: 2.027123023002321833274663731572218239307403564453125
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        reasonTypes:
+        - reasonId: 4
+        - reasonId: 4
+        edrpou: "edrpou"
+        currency: "currency"
+        id: 1
+        pdvAmount: 9.301444243932575517419536481611430644989013671875
+        amount: 5.962133916683182377482808078639209270477294921875
+        reasonOtherComment: "reasonOtherComment"
+        toDate: "toDate"
+        isCorrectionWithPDF: false
+        parentId: 2
+        pdvInclude: false
+        fromDate: "fromDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        noTerm: false
+        correctionType: 3
+        isCpvVat: false
+      - documentDate: "documentDate"
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        amountIncrease: 7.061401241503109105224211816675961017608642578125
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        subject: "subject"
+        correctionVATValue: 2.027123023002321833274663731572218239307403564453125
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        reasonTypes:
+        - reasonId: 4
+        - reasonId: 4
+        edrpou: "edrpou"
+        currency: "currency"
+        id: 1
+        pdvAmount: 9.301444243932575517419536481611430644989013671875
+        amount: 5.962133916683182377482808078639209270477294921875
+        reasonOtherComment: "reasonOtherComment"
+        toDate: "toDate"
+        isCorrectionWithPDF: false
+        parentId: 2
+        pdvInclude: false
+        fromDate: "fromDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        noTerm: false
+        correctionType: 3
+        isCpvVat: false
+      signDate: "signDate"
+      acts:
+      - documentDate: "documentDate"
+        amount: 5.962133916683182377482808078639209270477294921875
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        parentId: 3
+        pdvInclude: false
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        edrpou: "edrpou"
+        isCpvVat: false
+        currency: "currency"
+        id: 1
+        pdvAmount: 2.027123023002321833274663731572218239307403564453125
+      - documentDate: "documentDate"
+        amount: 5.962133916683182377482808078639209270477294921875
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        parentId: 3
+        pdvInclude: false
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        edrpou: "edrpou"
+        isCpvVat: false
+        currency: "currency"
+        id: 1
+        pdvAmount: 2.027123023002321833274663731572218239307403564453125
+      specifications:
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      - cpvCode: "cpvCode"
+        specCode: "specCode"
+        itemCost: 4.1456080298839363962315474054776132106781005859375
+        itemDimension: "itemDimension"
+        specificationName: "specificationName"
+        itemCount: 7.3862819483858839220147274318151175975799560546875
+      pdvInclude: false
+      fromDate: "fromDate"
+      contractors:
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      currencyAmountUAH: 1.46581298050294517310021547018550336360931396484375
+      edrpou: "edrpou"
+      noTerm: false
+      isCpvVat: false
+      currency: "currency"
+      id: 0
+      pdvAmount: 5.962133916683182377482808078639209270477294921875
+  ContractorDTO:
+    type: "object"
+    properties:
+      address:
+        description: "Address"
+        $ref: "#/definitions/AddressDTO"
+      contractorType:
+        type: "integer"
+        format: "int32"
+        description: "Тип контрагента:\n0: фізична особа,\n1: фізична особа-підпри\
+          ємець,\n2: юридична особа,\n-1: невизначений"
+      firstName:
+        type: "string"
+        description: "Ім'я керівника контрагента"
+      identifier:
+        type: "string"
+      lastName:
+        type: "string"
+        description: "Прізвище керівника контрагента"
+      middleName:
+        type: "string"
+        description: "По батькові керівника контрагента"
+      name:
+        type: "string"
+        description: "Найменування контрагента"
+    title: "ContractorDTO"
+    example:
+      firstName: "firstName"
+      identifier: "identifier"
+      lastName: "lastName"
+      address:
+        districtCity: "districtCity"
+        city: "city"
+        housing: "housing"
+        regionId: 7
+        street: "street"
+        district: "district"
+        regionName: "regionName"
+        countryName: "countryName"
+        office: "office"
+        house: "house"
+        countryId: 2
+      contractorType: 9
+      name: "name"
+      middleName: "middleName"
+  ContractorType:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+    title: "ContractorType"
+    example:
+      code: 0
+      type: "type"
+  Country:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+        description: "Id країни"
+      code:
+        type: "string"
+        description: "Код країни"
+    title: "Country"
+    example:
+      code: "code"
+      id: 0
+  CurrencyDTO:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      id:
+        type: "integer"
+        format: "int32"
+      title:
+        type: "string"
+    title: "CurrencyDTO"
+  DicIncDto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "ID запису"
+      code:
+        type: "string"
+        description: "Код класифікації доходів бюджету"
+      name:
+        type: "string"
+        description: "Найменування доходів бюджету"
+      parentCode:
+        type: "string"
+        description: "Батьківський код"
+      level:
+        type: "integer"
+        format: "int32"
+        description: "Рівень коду в ієрархії"
+      details:
+        type: "boolean"
+        example: false
+        description: "Ознака детальний"
+      beginDate:
+        type: "string"
+        description: "Дата початку дії запису"
+      beginDoc:
+        type: "string"
+        description: "Підстава для створення запису"
+      endDate:
+        type: "string"
+        description: "Дата припинення дії запису"
+      endDoc:
+        type: "string"
+        description: "Підстава для припинення дії запису"
+    title: "DicIncDto"
+    example:
+      beginDate: "beginDate"
+      code: "code"
+      parentCode: "parentCode"
+      level: 6
+      endDate: "endDate"
+      name: "name"
+      beginDoc: "beginDoc"
+      details: false
+      id: 0
+      endDoc: "endDoc"
+  DicKekDto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "ID запису"
+      code:
+        type: "string"
+        description: "Код видатків бюджету за  економічною класифікацією"
+      name:
+        type: "string"
+        description: "Найменування видатків бюджету за  економічною класифікацією"
+      parentCode:
+        type: "string"
+        description: "Батьківський код"
+      level:
+        type: "integer"
+        format: "int32"
+        description: "Рівень коду в ієрархії"
+      details:
+        type: "boolean"
+        example: false
+        description: "Ознака детальний"
+      beginDate:
+        type: "string"
+        description: "Дата початку дії запису"
+      beginDoc:
+        type: "string"
+        description: "Підстава для створення запису"
+      endDate:
+        type: "string"
+        description: "Дата припинення дії запису"
+      endDoc:
+        type: "string"
+        description: "Підстава для припинення дії запису"
+    title: "DicKekDto"
+    example:
+      beginDate: "beginDate"
+      code: "code"
+      parentCode: "parentCode"
+      level: 6
+      endDate: "endDate"
+      name: "name"
+      beginDoc: "beginDoc"
+      details: false
+      id: 0
+      endDoc: "endDoc"
+  DisposerStatDTO:
+    type: "object"
+    properties:
+      cntSignActs:
+        type: "integer"
+        format: "int64"
+      cntSignAddendums:
+        type: "integer"
+        format: "int64"
+      cntSignContracts:
+        type: "integer"
+        format: "int64"
+      cntSignFines:
+        type: "integer"
+        format: "int64"
+      cntSignReports:
+        type: "integer"
+        format: "int64"
+    title: "DisposerStatDTO"
+    example:
+      cntSignContracts: 1
+      cntSignActs: 0
+      cntSignAddendums: 6
+      cntSignFines: 5
+      cntSignReports: 5
+  DistributorDTO:
+    type: "object"
+    properties:
+      edrState:
+        type: "string"
+        description: "Статус організації"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ"
+      kopfg:
+        type: "integer"
+        format: "int64"
+        description: "КОПФГ"
+      orgName:
+        type: "string"
+        description: "Назва організації"
+      profileState:
+        type: "string"
+        description: "Статус кабінету"
+      regionName:
+        type: "string"
+        description: "Область"
+    title: "DistributorDTO"
+    example:
+      profileState: "profileState"
+      edrpou: "edrpou"
+      orgName: "orgName"
+      regionName: "regionName"
+      edrState: "edrState"
+      kopfg: 0
+  DistributorRequest:
+    type: "object"
+    properties:
+      edrpou:
+        type: "string"
+      empty:
+        type: "boolean"
+      hasCabinet:
+        type: "boolean"
+      kopfg:
+        type: "integer"
+        format: "int32"
+      orgEdrState:
+        type: "integer"
+        format: "int32"
+      organizationName:
+        type: "string"
+      regionId:
+        type: "integer"
+        format: "int32"
+      regionIds:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+    title: "DistributorRequest"
+    example:
+      edrpou: "edrpou"
+      organizationName: "organizationName"
+      orgEdrState: 6
+      regionId: 1
+      hasCabinet: true
+      kopfg: 0
+      regionIds:
+      - 5
+      - 5
+      empty: true
+  DkppDict:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      codeParent:
+        type: "string"
+      nameProd:
+        type: "string"
+      numberSection:
+        type: "string"
+    title: "DkppDict"
+    example:
+      nameProd: "nameProd"
+      code: "code"
+      numberSection: "numberSection"
+      codeParent: "codeParent"
+  DksuDepartment:
+    type: "object"
+    properties:
+      regionCode:
+        type: "integer"
+        format: "int32"
+      regionName:
+        type: "string"
+    title: "DksuDepartment"
+  DocStat:
+    type: "object"
+    properties:
+      cntRep:
+        type: "integer"
+        format: "int32"
+        description: "Кількість внесених звітів"
+      cntDoc:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених договорів"
+      cntAddDoc:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених додатків"
+      cntAct:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених актів"
+      cntPeny:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених штрафів"
+      cntSignRep:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних звітів"
+      cntSignCont:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних договорів"
+      cntSignAddCont:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних додатків"
+      cntSignAct:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних актів"
+      cntSignPeny:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних штрафів"
+    title: "DocStat"
+    example:
+      cntSignRep: 2
+      cntAddDoc: 1
+      cntRep: 0
+      cntSignAddCont: 9
+      cntAct: 5
+      cntSignCont: 7
+      cntSignAct: 3
+      cntDoc: 6
+      cntPeny: 5
+      cntSignPeny: 2
+  DocumentDTO:
+    type: "object"
+    properties:
+      typeId:
+        type: "integer"
+        format: "int32"
+      id:
+        type: "integer"
+        format: "int64"
+        description: "id-документу"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ-розпорядника"
+      documentNumber:
+        type: "string"
+        description: "Номер документу"
+      documentDate:
+        type: "string"
+        description: "Дата укладання документу"
+      signDate:
+        type: "string"
+        description: "Дата підписання (оприлюднення)"
+      signature:
+        description: "ЕЦП"
+        $ref: "#/definitions/SignatureDTO"
+      amount:
+        type: "number"
+        format: "double"
+        description: "Вартість документу"
+      currency:
+        type: "string"
+        description: "Валюта документу"
+      currencyAmountUAH:
+        type: "number"
+        format: "double"
+        description: "Еквівалент, грн. (для валютних документів)"
+      contractors:
+        type: "array"
+        description: "Контрагенти"
+        items:
+          $ref: "#/definitions/ContractorDTO"
+    title: "DocumentDTO"
+  DocumentResultDTO«ActDTO»:
+    type: "object"
+    properties:
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Кількість знайдених документів у відповіді"
+      count:
+        type: "integer"
+        format: "int32"
+        description: "Знайдено (або більше ніж, якщо moreThenCount = true)"
+      moreThenCount:
+        type: "boolean"
+        example: false
+        description: "Загальна кількість документів більша ніж зазначена в полі count"
+      documents:
+        type: "array"
+        description: "Список документів"
+        items:
+          $ref: "#/definitions/ActDTO"
+    title: "DocumentResultDTO«ActDTO»"
+    example:
+      moreThenCount: false
+      size: 0
+      documents:
+      - documentDate: "documentDate"
+        amount: 5.962133916683182377482808078639209270477294921875
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        parentId: 3
+        pdvInclude: false
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        edrpou: "edrpou"
+        isCpvVat: false
+        currency: "currency"
+        id: 1
+        pdvAmount: 2.027123023002321833274663731572218239307403564453125
+      - documentDate: "documentDate"
+        amount: 5.962133916683182377482808078639209270477294921875
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        parentId: 3
+        pdvInclude: false
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        edrpou: "edrpou"
+        isCpvVat: false
+        currency: "currency"
+        id: 1
+        pdvAmount: 2.027123023002321833274663731572218239307403564453125
+      count: 6
+  DocumentResultDTO«AddendumDTO»:
+    type: "object"
+    properties:
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Кількість знайдених документів у відповіді"
+      count:
+        type: "integer"
+        format: "int32"
+        description: "Знайдено (або більше ніж, якщо moreThenCount = true)"
+      moreThenCount:
+        type: "boolean"
+        example: false
+        description: "Загальна кількість документів більша ніж зазначена в полі count"
+      documents:
+        type: "array"
+        description: "Список документів"
+        items:
+          $ref: "#/definitions/AddendumDTO"
+    title: "DocumentResultDTO«AddendumDTO»"
+    example:
+      moreThenCount: false
+      size: 0
+      documents:
+      - documentDate: "documentDate"
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        amountIncrease: 7.061401241503109105224211816675961017608642578125
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        subject: "subject"
+        correctionVATValue: 2.027123023002321833274663731572218239307403564453125
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        reasonTypes:
+        - reasonId: 4
+        - reasonId: 4
+        edrpou: "edrpou"
+        currency: "currency"
+        id: 1
+        pdvAmount: 9.301444243932575517419536481611430644989013671875
+        amount: 5.962133916683182377482808078639209270477294921875
+        reasonOtherComment: "reasonOtherComment"
+        toDate: "toDate"
+        isCorrectionWithPDF: false
+        parentId: 2
+        pdvInclude: false
+        fromDate: "fromDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        noTerm: false
+        correctionType: 3
+        isCpvVat: false
+      - documentDate: "documentDate"
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        amountIncrease: 7.061401241503109105224211816675961017608642578125
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        subject: "subject"
+        correctionVATValue: 2.027123023002321833274663731572218239307403564453125
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        reasonTypes:
+        - reasonId: 4
+        - reasonId: 4
+        edrpou: "edrpou"
+        currency: "currency"
+        id: 1
+        pdvAmount: 9.301444243932575517419536481611430644989013671875
+        amount: 5.962133916683182377482808078639209270477294921875
+        reasonOtherComment: "reasonOtherComment"
+        toDate: "toDate"
+        isCorrectionWithPDF: false
+        parentId: 2
+        pdvInclude: false
+        fromDate: "fromDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        noTerm: false
+        correctionType: 3
+        isCpvVat: false
+      count: 6
+  DocumentResultDTO«ContractDTO»:
+    type: "object"
+    properties:
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Кількість знайдених документів у відповіді"
+      count:
+        type: "integer"
+        format: "int32"
+        description: "Знайдено (або більше ніж, якщо moreThenCount = true)"
+      moreThenCount:
+        type: "boolean"
+        example: false
+        description: "Загальна кількість документів більша ніж зазначена в полі count"
+      documents:
+        type: "array"
+        description: "Список документів"
+        items:
+          $ref: "#/definitions/ContractDTO"
+    title: "DocumentResultDTO«ContractDTO»"
+    example:
+      moreThenCount: false
+      size: 0
+      documents:
+      - documentDate: "documentDate"
+        tender: false
+        reason: "reason"
+        amount: 5.962133916683182377482808078639209270477294921875
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        subject: "subject"
+        toDate: "toDate"
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        pdvInclude: false
+        fromDate: "fromDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        edrpou: "edrpou"
+        noTerm: false
+        isCpvVat: false
+        currency: "currency"
+        id: 1
+        pdvAmount: 2.3021358869347654518833223846741020679473876953125
+      - documentDate: "documentDate"
+        tender: false
+        reason: "reason"
+        amount: 5.962133916683182377482808078639209270477294921875
+        procurementItems:
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        - cpvCode: "cpvCode"
+          nameUa: "nameUa"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        subject: "subject"
+        toDate: "toDate"
+        signDate: "signDate"
+        specifications:
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        - cpvCode: "cpvCode"
+          specCode: "specCode"
+          itemCost: 4.1456080298839363962315474054776132106781005859375
+          itemDimension: "itemDimension"
+          specificationName: "specificationName"
+          itemCount: 7.3862819483858839220147274318151175975799560546875
+        pdvInclude: false
+        fromDate: "fromDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        currencyAmountUAH: 5.63737665663332876420099637471139430999755859375
+        edrpou: "edrpou"
+        noTerm: false
+        isCpvVat: false
+        currency: "currency"
+        id: 1
+        pdvAmount: 2.3021358869347654518833223846741020679473876953125
+      count: 6
+  DocumentResultDTO«PenyDTO»:
+    type: "object"
+    properties:
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Кількість знайдених документів у відповіді"
+      count:
+        type: "integer"
+        format: "int32"
+        description: "Знайдено (або більше ніж, якщо moreThenCount = true)"
+      moreThenCount:
+        type: "boolean"
+        example: false
+        description: "Загальна кількість документів більша ніж зазначена в полі count"
+      documents:
+        type: "array"
+        description: "Список документів"
+        items:
+          $ref: "#/definitions/PenyDTO"
+    title: "DocumentResultDTO«PenyDTO»"
+    example:
+      moreThenCount: false
+      size: 0
+      documents:
+      - documentDate: "documentDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        amount: 2.3021358869347654518833223846741020679473876953125
+        currencyAmountUAH: 7.061401241503109105224211816675961017608642578125
+        edrpou: "edrpou"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        currency: "currency"
+        id: 5
+        signDate: "signDate"
+        parentId: 9
+      - documentDate: "documentDate"
+        contractors:
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        - firstName: "firstName"
+          identifier: "identifier"
+          lastName: "lastName"
+          address:
+            districtCity: "districtCity"
+            city: "city"
+            housing: "housing"
+            regionId: 7
+            street: "street"
+            district: "district"
+            regionName: "regionName"
+            countryName: "countryName"
+            office: "office"
+            house: "house"
+            countryId: 2
+          contractorType: 9
+          name: "name"
+          middleName: "middleName"
+        amount: 2.3021358869347654518833223846741020679473876953125
+        currencyAmountUAH: 7.061401241503109105224211816675961017608642578125
+        edrpou: "edrpou"
+        signature:
+          caAddress: "caAddress"
+        documentNumber: "documentNumber"
+        currency: "currency"
+        id: 5
+        signDate: "signDate"
+        parentId: 9
+      count: 6
+  EdrState:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      stateName:
+        type: "string"
+    title: "EdrState"
+  EnterpriseStatistic:
+    type: "object"
+    properties:
+      docAmount:
+        type: "integer"
+        format: "int32"
+      edrpou:
+        type: "string"
+      orgName:
+        type: "string"
+      signedActs:
+        type: "integer"
+        format: "int32"
+      signedAddendums:
+        type: "integer"
+        format: "int32"
+      signedContracts:
+        type: "integer"
+        format: "int32"
+      signedFines:
+        type: "integer"
+        format: "int32"
+      signedReports:
+        type: "integer"
+        format: "int32"
+    title: "EnterpriseStatistic"
+    example:
+      signedActs: 6
+      edrpou: "edrpou"
+      orgName: "orgName"
+      signedReports: 2
+      docAmount: 0
+      signedFines: 5
+      signedContracts: 5
+      signedAddendums: 1
+  File:
+    type: "object"
+    properties:
+      absolute:
+        type: "boolean"
+      absoluteFile:
+        $ref: "#/definitions/File"
+      absolutePath:
+        type: "string"
+      canonicalFile:
+        $ref: "#/definitions/File"
+      canonicalPath:
+        type: "string"
+      directory:
+        type: "boolean"
+      file:
+        type: "boolean"
+      freeSpace:
+        type: "integer"
+        format: "int64"
+      hidden:
+        type: "boolean"
+      name:
+        type: "string"
+      parent:
+        type: "string"
+      parentFile:
+        $ref: "#/definitions/File"
+      path:
+        type: "string"
+      totalSpace:
+        type: "integer"
+        format: "int64"
+      usableSpace:
+        type: "integer"
+        format: "int64"
+    title: "File"
+  FileDTO:
+    type: "object"
+    properties:
+      documentDate:
+        type: "string"
+        example: "yyyy-MM-dd"
+      documentType:
+        type: "string"
+        enum:
+        - "UNDEFINED"
+        - "CONTRACT"
+        - "ADDENDUM"
+        - "ACT"
+        - "PENY"
+        - "DELETED"
+      finishDate:
+        type: "string"
+        example: "yyyy-MM-dd HH-mm-ss"
+    title: "FileDTO"
+    example:
+      documentDate: "yyyy-MM-dd"
+      documentType: "UNDEFINED"
+      finishDate: "yyyy-MM-dd HH-mm-ss"
+  InputStream:
+    type: "object"
+    title: "InputStream"
+  InputStreamResource:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+      file:
+        $ref: "#/definitions/File"
+      filename:
+        type: "string"
+      inputStream:
+        $ref: "#/definitions/InputStream"
+      open:
+        type: "boolean"
+      readable:
+        type: "boolean"
+      uri:
+        $ref: "#/definitions/URI"
+      url:
+        $ref: "#/definitions/URL"
+    title: "InputStreamResource"
+  Iterable«EdrState»:
+    type: "object"
+    title: "Iterable«EdrState»"
+  Koatuu:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      name:
+        type: "string"
+      regionId:
+        type: "integer"
+        format: "int32"
+    title: "Koatuu"
+    example:
+      code: "code"
+      regionId: 0
+      name: "name"
+  Kopfg:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      title:
+        type: "string"
+    title: "Kopfg"
+    example:
+      id: "id"
+      title: "title"
+  KopfgDict:
+    type: "object"
+    properties:
+      kopfgCode:
+        type: "string"
+      kopfgName:
+        type: "string"
+      kopfgParent:
+        type: "string"
+    title: "KopfgDict"
+  KopfgGroupedStat:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int32"
+      kopfg:
+        $ref: "#/definitions/Kopfg"
+      parts:
+        type: "array"
+        items:
+          $ref: "#/definitions/KopfgStat"
+    title: "KopfgGroupedStat"
+    example:
+      count: 6
+      parts:
+      - {}
+      - {}
+      kopfg:
+        id: "id"
+        title: "title"
+  KopfgStat:
+    type: "object"
+    title: "KopfgStat"
+  KvedDict:
+    type: "object"
+    properties:
+      availability:
+        type: "integer"
+        format: "int32"
+      kvedCode:
+        type: "string"
+      kvedName:
+        type: "string"
+      kvedParent:
+        type: "string"
+    title: "KvedDict"
+    example:
+      kvedCode: "kvedCode"
+      kvedParent: "kvedParent"
+      kvedName: "kvedName"
+      availability: 0
+  LastLoadDTO:
+    type: "object"
+    properties:
+      lastLoad:
+        type: "string"
+        example: "yyyy-MM-dd"
+      sourceId:
+        type: "integer"
+        format: "int32"
+      sourceName:
+        type: "string"
+    title: "LastLoadDTO"
+    example:
+      sourceId: 0
+      lastLoad: "yyyy-MM-dd"
+      sourceName: "sourceName"
+  LegendDTO:
+    type: "object"
+    properties:
+      legend:
+        type: "string"
+      regions:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+    title: "LegendDTO"
+    example:
+      regions:
+      - 0
+      - 0
+      legend: "legend"
+  NextLoadDTO:
+    type: "object"
+    properties:
+      nextload:
+        type: "string"
+        example: "yyyy-MM-dd"
+    title: "NextLoadDTO"
+  OrgStat:
+    type: "object"
+    properties:
+      regDate:
+        type: "string"
+        description: "Дата реєстрації"
+      orgCode:
+        type: "string"
+        description: "ЄДРПОУ"
+      orgName:
+        type: "string"
+        description: "Назва організації"
+      kopfg:
+        type: "string"
+        description: "КОПФГ"
+      koatu:
+        type: "string"
+        description: "КОАТУУ"
+      regionName:
+        type: "string"
+        description: "Регіон (область)"
+      district:
+        type: "string"
+        description: "Район"
+      city:
+        type: "string"
+        description: "Населений пункт"
+      districtCity:
+        type: "string"
+        description: "Район міста"
+      cntRep:
+        type: "integer"
+        format: "int32"
+        description: "Кількість внесених звітів"
+      cntDoc:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених договорів"
+      cntAddDoc:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених додатків"
+      cntAct:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених актів"
+      cntPeny:
+        type: "integer"
+        format: "int32"
+        description: "К-ть внесених штрафів"
+      cntSignRep:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних звітів"
+      cntSignCont:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних договорів"
+      cntSignAddCont:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних додатків"
+      cntSignAct:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних актів"
+      cntSignPeny:
+        type: "integer"
+        format: "int32"
+        description: "К-ть підписаних штрафів"
+    title: "OrgStat"
+  OrganizationDTO:
+    type: "object"
+    properties:
+      address:
+        $ref: "#/definitions/AddressDTO"
+      director:
+        $ref: "#/definitions/PersonDTO"
+      edrpou:
+        type: "string"
+      email:
+        type: "string"
+      generalDisposer:
+        $ref: "#/definitions/OrganizationGeneralDTO"
+      koatuu:
+        type: "string"
+      kopfg:
+        type: "string"
+      kved:
+        type: "string"
+      orgForm:
+        type: "string"
+      orgName:
+        type: "string"
+      orgType:
+        type: "array"
+        items:
+          type: "string"
+      phone:
+        type: "string"
+      registrationDate:
+        type: "string"
+        example: "yyyy-MM-dd"
+    title: "OrganizationDTO"
+    example:
+      orgForm: "orgForm"
+      address:
+        districtCity: "districtCity"
+        city: "city"
+        housing: "housing"
+        regionId: 7
+        street: "street"
+        district: "district"
+        regionName: "regionName"
+        countryName: "countryName"
+        office: "office"
+        house: "house"
+        countryId: 2
+      orgName: "orgName"
+      director:
+        firstName: "firstName"
+        lastName: "lastName"
+        middleName: "middleName"
+      orgType:
+      - "orgType"
+      - "orgType"
+      edrpou: "edrpou"
+      generalDisposer:
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        edrpou: "edrpou"
+        director:
+          firstName: "firstName"
+          lastName: "lastName"
+          middleName: "middleName"
+        koatuu: "koatuu"
+        fullName: "fullName"
+        shortName: "shortName"
+      phone: "phone"
+      koatuu: "koatuu"
+      kved: "kved"
+      registrationDate: "yyyy-MM-dd"
+      kopfg: "kopfg"
+      email: "email"
+  OrganizationGeneralDTO:
+    type: "object"
+    properties:
+      address:
+        $ref: "#/definitions/AddressDTO"
+      director:
+        $ref: "#/definitions/PersonDTO"
+      edrpou:
+        type: "string"
+      fullName:
+        type: "string"
+      koatuu:
+        type: "string"
+      shortName:
+        type: "string"
+    title: "OrganizationGeneralDTO"
+    example:
+      address:
+        districtCity: "districtCity"
+        city: "city"
+        housing: "housing"
+        regionId: 7
+        street: "street"
+        district: "district"
+        regionName: "regionName"
+        countryName: "countryName"
+        office: "office"
+        house: "house"
+        countryId: 2
+      edrpou: "edrpou"
+      director:
+        firstName: "firstName"
+        lastName: "lastName"
+        middleName: "middleName"
+      koatuu: "koatuu"
+      fullName: "fullName"
+      shortName: "shortName"
+  OrganizationTypesDict:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+    title: "OrganizationTypesDict"
+    example:
+      code: "code"
+      name: "name"
+      id: 0
+  PageResult«DistributorDTO»:
+    type: "object"
+    properties:
+      elements:
+        type: "array"
+        description: "Список елементів"
+        items:
+          $ref: "#/definitions/DistributorDTO"
+      number:
+        type: "integer"
+        format: "int32"
+        description: "Номер сторінки"
+      pageSize:
+        type: "integer"
+        format: "int32"
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Елементів на сторінці"
+      totalElements:
+        type: "integer"
+        format: "int64"
+        description: "Всього документів"
+      totalPages:
+        type: "integer"
+        format: "int64"
+        description: "Всього сторінок"
+    title: "PageResult«DistributorDTO»"
+    example:
+      number: 6
+      size: 5
+      elements:
+      - profileState: "profileState"
+        edrpou: "edrpou"
+        orgName: "orgName"
+        regionName: "regionName"
+        edrState: "edrState"
+        kopfg: 0
+      - profileState: "profileState"
+        edrpou: "edrpou"
+        orgName: "orgName"
+        regionName: "regionName"
+        edrState: "edrState"
+        kopfg: 0
+      totalPages: 2
+      pageSize: 1
+      totalElements: 5
+  PageResult«DocumentDTO»:
+    type: "object"
+    properties:
+      elements:
+        type: "array"
+        description: "Список елементів"
+        items:
+          $ref: "#/definitions/DocumentDTO"
+      number:
+        type: "integer"
+        format: "int32"
+        description: "Номер сторінки"
+      pageSize:
+        type: "integer"
+        format: "int32"
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Елементів на сторінці"
+      totalElements:
+        type: "integer"
+        format: "int64"
+        description: "Всього документів"
+      totalPages:
+        type: "integer"
+        format: "int64"
+        description: "Всього сторінок"
+    title: "PageResult«DocumentDTO»"
+  PageResult«EnterpriseStatistic»:
+    type: "object"
+    properties:
+      elements:
+        type: "array"
+        description: "Список елементів"
+        items:
+          $ref: "#/definitions/EnterpriseStatistic"
+      number:
+        type: "integer"
+        format: "int32"
+        description: "Номер сторінки"
+      pageSize:
+        type: "integer"
+        format: "int32"
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Елементів на сторінці"
+      totalElements:
+        type: "integer"
+        format: "int64"
+        description: "Всього документів"
+      totalPages:
+        type: "integer"
+        format: "int64"
+        description: "Всього сторінок"
+    title: "PageResult«EnterpriseStatistic»"
+  PagedRequest«DistributorRequest»:
+    type: "object"
+    properties:
+      query:
+        $ref: "#/definitions/DistributorRequest"
+      page:
+        type: "integer"
+        format: "int32"
+        description: "Номер сторінки"
+      pageSize:
+        type: "integer"
+        format: "int32"
+        description: "Кількість елементів на сторінці"
+    title: "PagedRequest«DistributorRequest»"
+    example:
+      query:
+        edrpou: "edrpou"
+        organizationName: "organizationName"
+        orgEdrState: 6
+        regionId: 1
+        hasCabinet: true
+        kopfg: 0
+        regionIds:
+        - 5
+        - 5
+        empty: true
+      pageSize: 2
+      page: 5
+  PagedRequest«Void»:
+    type: "object"
+    properties:
+      page:
+        type: "integer"
+        format: "int32"
+        description: "Номер сторінки"
+      pageSize:
+        type: "integer"
+        format: "int32"
+        description: "Кількість елементів на сторінці"
+    title: "PagedRequest«Void»"
+    example:
+      pageSize: 6
+      page: 0
+  PaymentData:
+    type: "object"
+    title: "PaymentData"
+  PenyDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "id-документу"
+      edrpou:
+        type: "string"
+        description: "ЄДРПОУ-розпорядника"
+      documentNumber:
+        type: "string"
+        description: "Номер документу"
+      documentDate:
+        type: "string"
+        description: "Дата укладання документу"
+      signDate:
+        type: "string"
+        description: "Дата підписання (оприлюднення)"
+      signature:
+        description: "ЕЦП"
+        $ref: "#/definitions/SignatureDTO"
+      amount:
+        type: "number"
+        format: "double"
+        description: "Вартість документу"
+      currency:
+        type: "string"
+        description: "Валюта документу"
+      currencyAmountUAH:
+        type: "number"
+        format: "double"
+        description: "Еквівалент, грн. (для валютних документів)"
+      contractors:
+        type: "array"
+        description: "Контрагенти"
+        items:
+          $ref: "#/definitions/ContractorDTO"
+      parentId:
+        type: "integer"
+        format: "int64"
+        description: "id-договору (\"батьківський\" договір для штрафної санкції)"
+    title: "PenyDTO"
+    example:
+      documentDate: "documentDate"
+      contractors:
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      - firstName: "firstName"
+        identifier: "identifier"
+        lastName: "lastName"
+        address:
+          districtCity: "districtCity"
+          city: "city"
+          housing: "housing"
+          regionId: 7
+          street: "street"
+          district: "district"
+          regionName: "regionName"
+          countryName: "countryName"
+          office: "office"
+          house: "house"
+          countryId: 2
+        contractorType: 9
+        name: "name"
+        middleName: "middleName"
+      amount: 2.3021358869347654518833223846741020679473876953125
+      currencyAmountUAH: 7.061401241503109105224211816675961017608642578125
+      edrpou: "edrpou"
+      signature:
+        caAddress: "caAddress"
+      documentNumber: "documentNumber"
+      currency: "currency"
+      id: 5
+      signDate: "signDate"
+      parentId: 9
+  PersonDTO:
+    type: "object"
+    properties:
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      middleName:
+        type: "string"
+    title: "PersonDTO"
+    example:
+      firstName: "firstName"
+      lastName: "lastName"
+      middleName: "middleName"
+  Procurement:
+    type: "object"
+    properties:
+      cpvCode:
+        type: "string"
+        description: "CPV CODE"
+      nameUa:
+        type: "string"
+        description: "Name of Item"
+    title: "Procurement"
+    example:
+      cpvCode: "cpvCode"
+      nameUa: "nameUa"
+  RegionKopfgStat:
+    type: "object"
+    properties:
+      koatuu:
+        $ref: "#/definitions/Koatuu"
+      stat:
+        type: "array"
+        items:
+          $ref: "#/definitions/KopfgGroupedStat"
+    title: "RegionKopfgStat"
+    example:
+      stat:
+      - count: 6
+        parts:
+        - {}
+        - {}
+        kopfg:
+          id: "id"
+          title: "title"
+      - count: 6
+        parts:
+        - {}
+        - {}
+        kopfg:
+          id: "id"
+          title: "title"
+      koatuu:
+        code: "code"
+        regionId: 0
+        name: "name"
+  RegionStatDTO:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int32"
+      id:
+        type: "integer"
+        format: "int32"
+      name:
+        type: "string"
+      sum:
+        type: "number"
+        format: "double"
+    title: "RegionStatDTO"
+    example:
+      count: 0
+      name: "name"
+      sum: 1.46581298050294517310021547018550336360931396484375
+      id: 6
+  Regions:
+    type: "object"
+    properties:
+      koatuu:
+        type: "string"
+      regionCode:
+        type: "integer"
+        format: "int32"
+      regionName:
+        type: "string"
+    title: "Regions"
+    example:
+      regionCode: 0
+      koatuu: "koatuu"
+      regionName: "regionName"
+  ReportApiCodeDto:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      reportTypeId:
+        type: "integer"
+        format: "int64"
+      shortTitle:
+        type: "string"
+      title:
+        type: "string"
+      type:
+        type: "string"
+    title: "ReportApiCodeDto"
+    example:
+      code: "code"
+      reportTypeId: 0
+      shortTitle: "shortTitle"
+      title: "title"
+      type: "type"
+  Resource:
+    type: "object"
+    properties:
+      description:
+        type: "string"
+      file:
+        $ref: "#/definitions/File"
+      filename:
+        type: "string"
+      inputStream:
+        $ref: "#/definitions/InputStream"
+      open:
+        type: "boolean"
+      readable:
+        type: "boolean"
+      uri:
+        $ref: "#/definitions/URI"
+      url:
+        $ref: "#/definitions/URL"
+    title: "Resource"
+  ShortAddressDTO:
+    type: "object"
+    properties:
+      city:
+        type: "string"
+      district:
+        type: "string"
+      districtCity:
+        type: "string"
+      prefix:
+        type: "string"
+      regionId:
+        type: "integer"
+        format: "int32"
+      regionName:
+        type: "string"
+    title: "ShortAddressDTO"
+    example:
+      districtCity: "districtCity"
+      city: "city"
+      regionId: 0
+      prefix: "prefix"
+      district: "district"
+      regionName: "regionName"
+  SignatureDTO:
+    type: "object"
+    properties:
+      caAddress:
+        type: "string"
+    title: "SignatureDTO"
+    example:
+      caAddress: "caAddress"
+  SpecificationDTO:
+    type: "object"
+    properties:
+      cpvCode:
+        type: "string"
+      itemCost:
+        type: "number"
+        format: "double"
+      itemCount:
+        type: "number"
+        format: "double"
+      itemDimension:
+        type: "string"
+      specCode:
+        type: "string"
+      specificationName:
+        type: "string"
+    title: "SpecificationDTO"
+    example:
+      cpvCode: "cpvCode"
+      specCode: "specCode"
+      itemCost: 4.1456080298839363962315474054776132106781005859375
+      itemDimension: "itemDimension"
+      specificationName: "specificationName"
+      itemCount: 7.3862819483858839220147274318151175975799560546875
+  StatDTO:
+    type: "object"
+    properties:
+      amount:
+        type: "number"
+        format: "float"
+      name:
+        type: "string"
+      percents:
+        type: "number"
+        format: "float"
+    title: "StatDTO"
+    example:
+      amount: 0.8008282
+      name: "name"
+      percents: 6.0274563
+  TopTransaction:
+    type: "object"
+    properties:
+      amount:
+        type: "number"
+      id:
+        type: "integer"
+        format: "int64"
+      payerEdrpou:
+        type: "string"
+      payerName:
+        type: "string"
+      reciptEdrpou:
+        type: "string"
+      reciptName:
+        type: "string"
+      transDate:
+        type: "string"
+        example: "yyyy-MM-dd"
+    title: "TopTransaction"
+    example:
+      amount: 0.80082819046101150206595775671303272247314453125
+      payerEdrpou: "payerEdrpou"
+      reciptName: "reciptName"
+      transDate: "yyyy-MM-dd"
+      payerName: "payerName"
+      reciptEdrpou: "reciptEdrpou"
+      id: 6
+  TransStatDTO:
+    type: "object"
+    properties:
+      from:
+        type: "string"
+        example: "yyyy-MM-dd"
+      regions:
+        type: "array"
+        items:
+          $ref: "#/definitions/RegionStatDTO"
+      reqDate:
+        type: "string"
+        example: "yyyy-MM-dd HH:mm"
+      totalCount:
+        type: "integer"
+        format: "int32"
+      totalSum:
+        type: "number"
+        format: "double"
+    title: "TransStatDTO"
+    example:
+      totalSum: 5.63737665663332876420099637471139430999755859375
+      regions:
+      - count: 0
+        name: "name"
+        sum: 1.46581298050294517310021547018550336360931396484375
+        id: 6
+      - count: 0
+        name: "name"
+        sum: 1.46581298050294517310021547018550336360931396484375
+        id: 6
+      reqDate: "yyyy-MM-dd HH:mm"
+      from: "yyyy-MM-dd"
+      totalCount: 5
+  TransactionDTO:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+        description: "Унікальний ідентифікатор"
+      doc_vob:
+        type: "string"
+        description: "Код розрахункового документа"
+      doc_vob_name:
+        type: "string"
+        description: "Тип розрахункового документа"
+      doc_number:
+        type: "string"
+        description: "Номер розрахункового документа"
+      doc_date:
+        type: "string"
+        description: "Дата складання"
+      doc_v_date:
+        type: "string"
+        description: "Дата валютування"
+      trans_date:
+        type: "string"
+        description: "Дата оплати"
+      amount:
+        type: "number"
+        description: "Сума"
+      amount_cop:
+        type: "integer"
+        format: "int64"
+        description: "Сума в копійках"
+      currency:
+        type: "string"
+        description: "Валюта"
+      payer_edrpou:
+        type: "string"
+        description: "Код платника"
+      payer_name:
+        type: "string"
+        description: "Найменування платника"
+      payer_account:
+        type: "string"
+        description: "Рахунок платника"
+      payer_mfo:
+        type: "string"
+        description: "Код банку платника"
+      payer_bank:
+        type: "string"
+        description: "Найменування банку платника"
+      recipt_edrpou:
+        type: "string"
+        description: "Код одержувача"
+      recipt_name:
+        type: "string"
+        description: "Найменування одержувача"
+      recipt_account:
+        type: "string"
+        description: "Рахунок одержувача"
+      recipt_bank:
+        type: "string"
+        description: "Найменування банку одержувача"
+      recipt_mfo:
+        type: "string"
+        description: "Код банку одержувача"
+      payment_details:
+        type: "string"
+        description: "Призначення платежу"
+      doc_add_attr:
+        type: "string"
+        description: "Додатковий реквізит"
+      region_id:
+        type: "integer"
+        format: "int32"
+        description: "Регіон"
+      payment_type:
+        type: "string"
+        description: "Тип платіжної системи"
+      payment_data:
+        description: "Додаткові дані визначеного типу платіжної системи"
+        $ref: "#/definitions/PaymentData"
+      source_id:
+        type: "integer"
+        format: "int32"
+        description: "Ідентифікатор джерела даних"
+      source_name:
+        type: "string"
+        description: "Джерело даних"
+      kekv:
+        type: "integer"
+        format: "int64"
+        description: "КЕКВ"
+      kpk:
+        type: "string"
+        description: "КПКВК"
+      contractId:
+        type: "string"
+        description: "Ідентифікатор договору про закупівлю"
+      contractNumber:
+        type: "string"
+        description: "Ідентифікатор закупівлі (Prozorro)"
+      budgetCode:
+        type: "string"
+        description: "Код бюджету"
+    title: "TransactionDTO"
+    example:
+      trans_date: "trans_date"
+      payment_details: "payment_details"
+      budgetCode: "budgetCode"
+      doc_vob_name: "doc_vob_name"
+      doc_number: "doc_number"
+      amount_cop: 1
+      recipt_name: "recipt_name"
+      payer_account: "payer_account"
+      doc_v_date: "doc_v_date"
+      currency: "currency"
+      payment_data: {}
+      id: 0
+      recipt_edrpou: "recipt_edrpou"
+      doc_add_attr: "doc_add_attr"
+      source_name: "source_name"
+      amount: 6.02745618307040320615897144307382404804229736328125
+      payer_bank: "payer_bank"
+      recipt_bank: "recipt_bank"
+      kpk: "kpk"
+      region_id: 5
+      contractNumber: "contractNumber"
+      payer_mfo: "payer_mfo"
+      payer_edrpou: "payer_edrpou"
+      recipt_mfo: "recipt_mfo"
+      payment_type: "payment_type"
+      doc_date: "doc_date"
+      recipt_account: "recipt_account"
+      kekv: 2
+      contractId: "contractId"
+      doc_vob: "doc_vob"
+      source_id: 5
+      payer_name: "payer_name"
+  TransactionsPageDTO:
+    type: "object"
+    properties:
+      count:
+        type: "integer"
+        format: "int64"
+        description: "Усього транзакцій за запитом"
+      page:
+        type: "integer"
+        format: "int32"
+        description: "Сторінка"
+      pageSize:
+        type: "integer"
+        format: "int32"
+        description: "Транзакцій на сторінці"
+      transactions:
+        type: "array"
+        description: "Транзакції"
+        items:
+          $ref: "#/definitions/TransactionDTO"
+    title: "TransactionsPageDTO"
+    example:
+      count: 0
+      pageSize: 1
+      page: 6
+      transactions:
+      - trans_date: "trans_date"
+        payment_details: "payment_details"
+        budgetCode: "budgetCode"
+        doc_vob_name: "doc_vob_name"
+        doc_number: "doc_number"
+        amount_cop: 1
+        recipt_name: "recipt_name"
+        payer_account: "payer_account"
+        doc_v_date: "doc_v_date"
+        currency: "currency"
+        payment_data: {}
+        id: 0
+        recipt_edrpou: "recipt_edrpou"
+        doc_add_attr: "doc_add_attr"
+        source_name: "source_name"
+        amount: 6.02745618307040320615897144307382404804229736328125
+        payer_bank: "payer_bank"
+        recipt_bank: "recipt_bank"
+        kpk: "kpk"
+        region_id: 5
+        contractNumber: "contractNumber"
+        payer_mfo: "payer_mfo"
+        payer_edrpou: "payer_edrpou"
+        recipt_mfo: "recipt_mfo"
+        payment_type: "payment_type"
+        doc_date: "doc_date"
+        recipt_account: "recipt_account"
+        kekv: 2
+        contractId: "contractId"
+        doc_vob: "doc_vob"
+        source_id: 5
+        payer_name: "payer_name"
+      - trans_date: "trans_date"
+        payment_details: "payment_details"
+        budgetCode: "budgetCode"
+        doc_vob_name: "doc_vob_name"
+        doc_number: "doc_number"
+        amount_cop: 1
+        recipt_name: "recipt_name"
+        payer_account: "payer_account"
+        doc_v_date: "doc_v_date"
+        currency: "currency"
+        payment_data: {}
+        id: 0
+        recipt_edrpou: "recipt_edrpou"
+        doc_add_attr: "doc_add_attr"
+        source_name: "source_name"
+        amount: 6.02745618307040320615897144307382404804229736328125
+        payer_bank: "payer_bank"
+        recipt_bank: "recipt_bank"
+        kpk: "kpk"
+        region_id: 5
+        contractNumber: "contractNumber"
+        payer_mfo: "payer_mfo"
+        payer_edrpou: "payer_edrpou"
+        recipt_mfo: "recipt_mfo"
+        payment_type: "payment_type"
+        doc_date: "doc_date"
+        recipt_account: "recipt_account"
+        kekv: 2
+        contractId: "contractId"
+        doc_vob: "doc_vob"
+        source_id: 5
+        payer_name: "payer_name"
+  URI:
+    type: "object"
+    properties:
+      absolute:
+        type: "boolean"
+      authority:
+        type: "string"
+      fragment:
+        type: "string"
+      host:
+        type: "string"
+      opaque:
+        type: "boolean"
+      path:
+        type: "string"
+      port:
+        type: "integer"
+        format: "int32"
+      query:
+        type: "string"
+      rawAuthority:
+        type: "string"
+      rawFragment:
+        type: "string"
+      rawPath:
+        type: "string"
+      rawQuery:
+        type: "string"
+      rawSchemeSpecificPart:
+        type: "string"
+      rawUserInfo:
+        type: "string"
+      scheme:
+        type: "string"
+      schemeSpecificPart:
+        type: "string"
+      userInfo:
+        type: "string"
+    title: "URI"
+  URL:
+    type: "object"
+    properties:
+      authority:
+        type: "string"
+      content:
+        type: "object"
+        properties: {}
+      defaultPort:
+        type: "integer"
+        format: "int32"
+      file:
+        type: "string"
+      host:
+        type: "string"
+      path:
+        type: "string"
+      port:
+        type: "integer"
+        format: "int32"
+      protocol:
+        type: "string"
+      query:
+        type: "string"
+      ref:
+        type: "string"
+      userInfo:
+        type: "string"
+    title: "URL"
+  UnitOfMeasure:
+    type: "object"
+    properties:
+      code:
+        type: "string"
+      unit:
+        type: "string"
+    title: "UnitOfMeasure"
